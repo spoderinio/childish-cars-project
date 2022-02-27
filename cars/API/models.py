@@ -1,10 +1,12 @@
+from urllib import request
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 
 
 class CarBrand(models.Model):
-    name = models.CharField(max_length=60)
+    name = models.CharField(max_length=60, unique=True)
     created_at = models.DateField(auto_now_add=True)
     deleted_at = models.DateField(blank=True, null=True)
 
@@ -15,7 +17,7 @@ class CarBrand(models.Model):
 class CarModel(models.Model):
     car_brand = models.ForeignKey(
         CarBrand, blank=True, null=True, on_delete=models.CASCADE)
-    name = models.CharField(max_length=60)
+    name = models.CharField(max_length=60, unique=True)
     created_at = models.DateField()
     deleted_at = models.DateField(blank=True, null=True)
 
@@ -24,9 +26,18 @@ class CarModel(models.Model):
 
 
 class UserCar(models.Model):
-    user = models.CharField('User Name', max_length=60)
+    # user = models.CharField(max_length=60, unique=True)
+    user = models.ForeignKey(
+        User,
+        models.SET_NULL,
+        blank=True,
+        null=True,
+    )
+
+    # user_id = int(request.POST['id'])
+    # user = request.POST['username']
     car_brand = models.ForeignKey(
-        CarBrand, blank=True, null=True, on_delete=models.CASCADE, related_query_name='name')
+        CarBrand, blank=True, null=True, on_delete=models.CASCADE)
     car_model = models.ForeignKey(
         CarModel, blank=True, null=True, on_delete=models.CASCADE)
     first_reg = models.DateField()
@@ -34,5 +45,5 @@ class UserCar(models.Model):
     created_at = models.DateField()
     deleted_at = models.DateField(blank=True, null=True)
 
-    def __str__(self):
-        return self.user
+    # def __str__(self):
+    #     return self.user
