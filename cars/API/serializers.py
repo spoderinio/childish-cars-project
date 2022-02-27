@@ -21,6 +21,9 @@ class CarBrandSerializer(serializers.Serializer):
 
 
 class CarModelSerializer(serializers.ModelSerializer):
+    name = serializers.SlugRelatedField(
+        many=True, read_only=True, slug_field='name')
+
     class Meta:
         model = CarModel
         fields = ['car_brand', 'name', 'created_at', 'deleted_at']

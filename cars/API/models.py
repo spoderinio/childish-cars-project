@@ -26,7 +26,7 @@ class CarModel(models.Model):
 class UserCar(models.Model):
     user = models.CharField('User Name', max_length=60)
     car_brand = models.ForeignKey(
-        CarBrand, blank=True, null=True, on_delete=models.CASCADE)
+        CarBrand, blank=True, null=True, on_delete=models.CASCADE, related_query_name='name')
     car_model = models.ForeignKey(
         CarModel, blank=True, null=True, on_delete=models.CASCADE)
     first_reg = models.DateField()
